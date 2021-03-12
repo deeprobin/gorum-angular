@@ -1,0 +1,13 @@
+.thread-item:hover {
+    cursor: pointer;
+    background: #e0e0e0;
+    border-radius: 4px;
+}
+
+#lastThreads {
+    margin-bottom: -10px;
+}
+
+.website {
+    text-decoration: none;
+}

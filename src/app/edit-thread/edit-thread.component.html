@@ -1,0 +1,14 @@
+<button mat-icon-button routerLink="/thread/{{id}}/{{config.generateURL(threadTitle)}}">
+  <mat-icon aria-label="{{lang('back')}}">arrow_back</mat-icon>
+</button>
+<br>
+<form>
+  <mat-form-field id="threadTitle">
+    <input matInput placeholder="{{lang('title')}}" name="threadTitle" [(ngModel)]="threadTitle" required />
+  </mat-form-field>
+  <br>
+  <input #content id="content" type="hidden">
+  <trix-editor input="content"></trix-editor>
+  <br>
+  <button mat-flat-button color="primary" (click)="publish(content.value)">{{lang('publish')}}</button>
+</form>

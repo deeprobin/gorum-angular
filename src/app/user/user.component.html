@@ -1,0 +1,81 @@
+<button mat-icon-button routerLink="/users">
+  <mat-icon aria-label="{{lang('back')}}">arrow_back</mat-icon>
+</button>
+
+<mat-card *ngIf="user.data['username']">
+  <mat-card-header>
+    <img mat-card-avatar width="50" height="50" src="{{config.baseUrl}}{{user.data['avatar']}}">
+    <mat-card-title>{{user.data['username']}}</mat-card-title>
+    <mat-card-subtitle>{{lang('joinedOn')}} {{config.registeredDate(user.data['registered'])}}</mat-card-subtitle>
+    <span class="fill-space"></span>
+
+    <mat-card-actions>
+      <button mat-flat-button *ngIf="config.getUsername() === user.data['username'] && config.login; else reportButton"
+        routerLink="/edit-profile" color="primary">{{lang("editProfile")}}</button>
+      <ng-template #reportButton>
+        <!-- TODO
+        <button mat-button #reportButton color="primary" *ngIf="config.login">{{lang("report")}}</button>
+        -->
+      </ng-template>
+    </mat-card-actions>
+  </mat-card-header>
+
+  <mat-card-content>
+    <div *ngIf="userData.contactDataProvided === true">
+      <h3 mat-line>{{lang("contactDetails")}}</h3>
+      <p mat-line *ngIf="userData.userData['website'] !== undefined">
+        {{lang("website")}}: <a href="{{userData.userData['website']}}" class="url">{{userData.userData['website']}}</a>
+      </p>
+      <p mat-line *ngIf="userData.userData['eMailAddress'] !== undefined">
+        {{lang("eMailAddress")}}: <a href="mailto:{{userData.userData['eMailAddress']}}"
+          class="url">{{userData.userData['eMailAddress']}}</a>
+      </p>
+      <p mat-line *ngIf="userData.userData['mastodon'] !== undefined">
+        {{lang("mastodon")}}: <a href="{{userData.userData['mastodon']}}"
+          class="url">{{userData.userData['mastodon']}}</a>
+      </p>
+      <p mat-line *ngIf="userData.userData['twitter'] !== undefined">
+        {{lang("twitter")}}: <a href="https://twitter.com/{{userData.userData['twitter']}}"
+          class="url">@{{userData.userData['twitter']}}</a>
+      </p>
+      <p mat-line *ngIf="userData.userData['youtube'] !== undefined">
+        {{lang("youtube")}}: <a href="{{userData.userData['youtube']}}" class="url">{{userData.userData['youtube']}}</a>
+      </p>
+      <p mat-line *ngIf="userData.userData['wire'] !== undefined">
+        {{lang("wire")}}: @{{userData.userData['wire']}}
+      </p>
+      <p mat-line *ngIf="userData.userData['discord'] !== undefined">
+        {{lang("discord")}}: {{userData.userData['discord']}}
+      </p>
+    </div>
+
+    <div *ngIf="userData.userData['aboutMe']">
+      <h3 mat-line>{{lang("aboutMe")}}</h3>
+      <p [innerHTML]="userData.userData['aboutMe']"></p>
+    </div>
+
+    <h3 mat-line id="lastThreads">{{lang('lastThreads')}}</h3>
+    <p mat-line class="gray">{{lang('lastThreadsDescription')}}</p>
+
+    <mat-list *ngFor="let thread of threads">
+      <mat-list-item class="thread-item" routerLink="/thread/{{thread.id}}/{{config.generateURL(thread.name)}}">
+        <img matListAvatar width="50" height="50" src="{{config.baseUrl}}{{thread.authorAvatar}}" />
+        <h4 mat-line>{{ thread.name }}</h4>
+        <p mat-line class="gray">
+          {{ lang('createdOn') }}
+          {{ config.createdDate(thread.created) }}
+          {{ lang('by') }}
+          {{ thread.authorName }}
+        </p>
+      </mat-list-item>
+    </mat-list>
+
+    <p *ngIf="threads.length == 0">{{ lang('noThreads') }}</p>
+  </mat-card-content>
+</mat-card>
+
+<mat-card *ngIf="!user.data['username']">
+  <mat-card-header>
+    <mat-card-title>{{lang("userDoesNotExist")}}</mat-card-title>
+  </mat-card-header>
+</mat-card>
